@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nizam — Frontend & Full-Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0E1B1A;
+    --ink-alt: #142826;
+    --ink-line: rgba(242,238,227,0.10);
+    --paper: #F2EEE3;
+    --paper-dim: #9FB0A6;
+    --stamp-red: #B34433;
+    --gold: #C9A24B;
+  }
+
+  *{ box-sizing:border-box; }
+  ::selection{ background:var(--gold); color:var(--ink); }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(201,162,75,0.06), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(179,68,51,0.05), transparent 45%),
+      var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(14,27,26,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--ink-line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .brand{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.02em;
+    text-decoration:none;
+  }
+  .brand span{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:0.7rem;
+    color:var(--gold);
+    vertical-align:super;
+    margin-left:2px;
+  }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .nav-links a{
+    text-decoration:none;
+    font-size:0.85rem;
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.03em;
+    color:var(--paper-dim);
+    transition:color 0.2s;
+    text-transform:uppercase;
+  }
+  .nav-links a:hover{ color:var(--gold); }
+  .nav-toggle{ display:none; }
+
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed;
+      top:60px; left:0; right:0;
+      flex-direction:column;
+      background:var(--ink-alt);
+      padding:24px 32px;
+      border-bottom:1px solid var(--ink-line);
+      gap:18px;
+      transform:translateY(-130%);
+      transition:transform 0.3s ease;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .nav-toggle{
+      display:block;
+      background:none;
+      border:1px solid var(--ink-line);
+      color:var(--paper);
+      width:36px; height:32px;
+      border-radius:4px;
+      cursor:pointer;
+      font-family:'IBM Plex Mono', monospace;
+    }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:168px 0 96px;
+    border-bottom:1px solid var(--ink-line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.5fr 0.7fr;
+    gap:48px;
+    align-items:start;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px; height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(2.6rem, 5.4vw, 4.4rem);
+    line-height:1.04;
+    margin:0 0 22px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .lede{
+    font-size:1.1rem;
+    max-width:540px;
+    color:var(--paper-dim);
+    margin:0 0 36px;
+  }
+  .lede strong{ color:var(--paper); font-weight:600; }
+
+  .cta-row{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:44px;
+  }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:13px 24px;
+    border-radius:3px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:all 0.2s;
+  }
+  .btn-primary{
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .btn-primary:hover{ background:#dab662; }
+  .btn-ghost{
+    border:1px solid var(--ink-line);
+    color:var(--paper);
+  }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+
+  .meta-line{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--paper-dim);
+    letter-spacing:0.03em;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 0;
+  }
+  .meta-line .sep{ margin:0 12px; color:var(--ink-line); }
+
+  /* ---------- STAMP BADGE ---------- */
+  .stamp{
+    width:172px; height:172px;
+    border:1.5px dashed var(--gold);
+    border-radius:50%;
+    margin:8px auto 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    transform:rotate(-9deg) scale(0.8);
+    opacity:0;
+    animation: stampIn 0.7s cubic-bezier(.2,1.4,.4,1) 0.35s forwards;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .stamp{ animation:none; opacity:1; transform:rotate(-9deg); }
+  }
+  @keyframes stampIn{
+    0%{ opacity:0; transform:rotate(-30deg) scale(1.6); }
+    60%{ opacity:1; }
+    100%{ opacity:1; transform:rotate(-9deg) scale(1); }
+  }
+  .stamp-inner{
+    width:134px; height:134px;
+    border:1px solid var(--stamp-red);
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:var(--stamp-red);
+    font-family:'IBM Plex Mono', monospace;
+    text-shadow:0.5px 0.5px 0 rgba(179,68,51,0.35);
+  }
+  .stamp-inner .big{
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.06em;
+    line-height:1.35;
+    padding:0 8px;
+  }
+  .stamp-inner .small{
+    font-size:0.58rem;
+    margin-top:6px;
+    letter-spacing:0.08em;
+    opacity:0.85;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:96px 0; }
+  .section-head{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:32px;
+    margin-bottom:56px;
+    align-items:baseline;
+  }
+  .doc-code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--gold);
+    letter-spacing:0.05em;
+  }
+  h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(1.8rem, 3.2vw, 2.5rem);
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  @media (max-width:760px){
+    .section-head{ grid-template-columns:1fr; gap:8px; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .stamp{ margin-top:36px; }
+  }
+
+  /* ---------- ABOUT ---------- */
+  #tentang{ border-bottom:1px solid var(--ink-line); }
+  .about-body{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+  }
+  .about-body p{ color:var(--paper-dim); margin:0 0 18px; }
+  .about-body strong{ color:var(--paper); font-weight:600; }
+  .about-note{
+    margin-top:8px;
+    padding:18px 20px;
+    background:var(--ink-alt);
+    border-left:2px solid var(--stamp-red);
+    border-radius:2px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    color:var(--paper-dim);
+    line-height:1.7;
+  }
+  .about-note b{ color:var(--gold); }
+
+  @media (max-width:760px){
+    .about-body{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- CASE FILES (PROJECTS) ---------- */
+  .file{
+    border:1px solid var(--ink-line);
+    border-radius:6px;
+    background:var(--ink-alt);
+    margin-bottom:20px;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .file.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion:reduce){
+    .file{ opacity:1; transform:none; }
+  }
+
+  .file-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 26px;
+    border-bottom:1px solid var(--ink-line);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .file-code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--paper-dim);
+    letter-spacing:0.03em;
+  }
+  .file-status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:5px 11px;
+    border:1px solid var(--stamp-red);
+    color:var(--stamp-red);
+    border-radius:20px;
+    transform:rotate(-2deg);
+  }
+  .file-status.gold{ border-color:var(--gold); color:var(--gold); }
+
+  .file-body{ padding:26px; }
+  .file-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.5rem;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .file-role{
+    font-size:0.85rem;
+    color:var(--paper-dim);
+    margin:0 0 16px;
+    font-style:italic;
+  }
+  .file-desc{ color:var(--paper-dim); margin:0 0 18px; max-width:640px; }
+  .file-metrics{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 28px;
+    margin-bottom:18px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .metric{ font-size:0.8rem; }
+  .metric b{ color:var(--gold); display:block; font-size:1.1rem; font-weight:600; }
+
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    padding:5px 10px;
+    border:1px solid var(--ink-line);
+    border-radius:3px;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- STACK ---------- */
+  .stack-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+  }
+  .stack-group{
+    border:1px solid var(--ink-line);
+    border-radius:6px;
+    padding:22px 24px;
+  }
+  .stack-group h3{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 14px;
+  }
+  .stack-group ul{
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .stack-group li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:7px 0;
+    font-size:0.92rem;
+    color:var(--paper-dim);
+    border-top:1px solid var(--ink-line);
+  }
+  .stack-group li:first-child{ border-top:none; }
+  .stack-group li::before{
+    content:'✓';
+    color:var(--stamp-red);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+  }
+
+  @media (max-width:760px){
+    .stack-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- CONTACT ---------- */
+  #kontak{
+    border-top:1px solid var(--ink-line);
+    text-align:left;
+  }
+  .contact-box{
+    border:1px solid var(--ink-line);
+    border-radius:8px;
+    padding:52px;
+    background:
+      linear-gradient(160deg, rgba(201,162,75,0.05), transparent 60%),
+      var(--ink-alt);
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .contact-box h2{ margin-bottom:14px; }
+  .contact-box p{ color:var(--paper-dim); max-width:440px; margin:0; }
+  .contact-links{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .contact-links a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.9rem;
+    text-decoration:none;
+    padding:14px 18px;
+    border:1px solid var(--ink-line);
+    border-radius:4px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:border-color 0.2s, color 0.2s;
+  }
+  .contact-links a:hover{ border-color:var(--gold); color:var(--gold); }
+  .contact-links a span.k{ color:var(--paper-dim); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; }
+
+  @media (max-width:760px){
+    .contact-box{ grid-template-columns:1fr; padding:32px 24px; }
+  }
+
+  footer{
+    padding:36px 0 60px;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    letter-spacing:0.04em;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="brand">NIZAM<span>/26</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#karya">Karya</a></li>
+      <li><a href="#keahlian">Keahlian</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Frontend & Full-Stack Developer</p>
+        <h1>Membangun sistem yang <em>benar-benar dipakai</em> orang.</h1>
+        <p class="lede">
+          Nizam — mahasiswa akhir Informatika di <strong>Universitas Gunadarma</strong>
+          dan co-founder <strong>Techdesk Indonesia</strong>. Bikin aplikasi web dan mobile
+          untuk kasus yang nyata: absensi sekolah, administrasi RT/RW, sampai dashboard koperasi —
+          dari desain sampai deploy.
+        </p>
+        <div class="cta-row">
+          <a href="#karya" class="btn btn-primary">Lihat Karya →</a>
+          <a href="#kontak" class="btn btn-ghost">Hubungi Saya</a>
+        </div>
+        <p class="meta-line">
+          JAKARTA, ID <span class="sep">/</span> UNIV. GUNADARMA <span class="sep">/</span> TECHDESK INDONESIA
+        </p>
+      </div>
+      <div class="stamp">
+        <div class="stamp-inner">
+          <div class="big">TERVERIFIKASI<br>FULL-STACK DEV.</div>
+          <div class="small">JKT · 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="doc-code">000/BIO/NZM</span>
+        <h2>Tentang</h2>
+      </div>
+      <div class="about-body">
+        <div>
+          <p>
+            Aku kerja lintas stack — <strong>Laravel</strong> untuk backend, <strong>Next.js</strong>
+            dan <strong>React</strong> untuk web, <strong>React Native</strong> untuk mobile.
+            Lulusan SMKN 21 Jakarta jurusan PPLG, sekarang menyelesaikan tahun terakhir
+            Informatika sambil menjalankan Techdesk Indonesia bareng partner — mengerjakan
+            proyek client dari web company profile sampai sistem administrasi yang kompleks.
+          </p>
+          <p>
+            Pola yang selalu berulang di kerjaanku: bikin alat digital untuk institusi yang
+            biasanya masih manual — RT/RW, koperasi, sekolah. Bukan produk SaaS abstrak,
+            tapi sistem yang langsung dipakai warga, pengurus, atau siswa sehari-hari.
+          </p>
+        </div>
+        <div>
+          <p>
+            Skripsi terakhir soal <strong>NEOSEN</strong>, sistem absensi berbasis RFID +
+            pengenalan wajah (ArcFace) untuk SMKN 21 Jakarta — pengembangan dari riset
+            penulisan ilmiah sebelumnya yang lebih sederhana.
+          </p>
+          <div class="about-note">
+            <b>Status saat ini —</b> menyiapkan sidang skripsi NEOSEN, sambil merapikan
+            portfolio dan proyek-proyek Techdesk. Di luar layar, main <b>bulutangkis</b>
+            dan ikut aktif di kegiatan warga RW 04 Manggarai.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="karya">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="doc-code">CATATAN/KARYA</span>
+        <h2>Berkas Proyek</h2>
+      </div>
+
+      <div class="file" data-file>
+        <div class="file-head">
+          <span class="file-code">No. 001/NEOSEN/SKRIPSI/2026</span>
+          <span class="file-status">SIDANG 2026</span>
+        </div>
+        <div class="file-body">
+          <h3 class="file-title">NEOSEN — Absensi RFID + Face Recognition</h3>
+          <p class="file-role">Peneliti & Pengembang Sistem · Skripsi, SMKN 21 Jakarta</p>
+          <p class="file-desc">
+            Sistem absensi yang menggabungkan kartu RFID dengan verifikasi wajah memakai
+            model ArcFace, dirancang supaya absensi sekolah lebih sulit dititip-titipkan
+            tanpa bikin repot proses hariannya.
+          </p>
+          <div class="file-metrics">
+            <div class="metric"><b>95%</b>Akurasi ArcFace</div>
+            <div class="metric"><b>100%</b>Precision</div>
+            <div class="metric"><b>94.7%</b>F1-Score</div>
+            <div class="metric"><b>95.5%</b>Penerimaan UAT (20 responden)</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">ArcFace</span>
+            <span class="tag">RFID</span>
+            <span class="tag">OpenCV</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="file" data-file>
+        <div class="file-head">
+          <span class="file-code">No. 002/WARGACARE/RT-RW/2025</span>
+          <span class="file-status gold">LIVE</span>
+        </div>
+        <div class="file-body">
+          <h3 class="file-title">SuratDigital / WargaCare</h3>
+          <p class="file-role">Full-Stack Developer · Proyek komunitas & client</p>
+          <p class="file-desc">
+            Aplikasi administrasi digital untuk RT/RW: warga login pakai NIK, ajukan
+            surat, lalu berjalan lewat alur persetujuan berjenjang sampai PDF surat
+            resmi otomatis terbit. Di-deploy pakai Cloudflare Tunnel supaya bisa diakses
+            tanpa server publik yang ribet.
+          </p>
+          <div class="tags">
+            <span class="tag">Laravel</span>
+            <span class="tag">Next.js</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">Cloudflare Tunnel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="file" data-file>
+        <div class="file-head">
+          <span class="file-code">No. 003/CISUKA/KOPERASI/2025</span>
+          <span class="file-status gold">DEPLOYED</span>
+        </div>
+        <div class="file-body">
+          <h3 class="file-title">Dashboard Koperasi CISUKA</h3>
+          <p class="file-role">Frontend Developer · UI/UX Redesign</p>
+          <p class="file-desc">
+            Merancang ulang dashboard operasional koperasi — struktur organisasi
+            divisualisasikan lewat bagan interaktif, dengan skema warna slate-blue
+            supaya data finansial dan keanggotaan lebih gampang dipindai pengurus.
+          </p>
+          <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">UI/UX</span>
+            <span class="tag">Data Visualization</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="file" data-file>
+        <div class="file-head">
+          <span class="file-code">No. 004/SATSET/TECHDESK/2024</span>
+          <span class="file-status">BETA</span>
+        </div>
+        <div class="file-body">
+          <h3 class="file-title">Satset — Aplikasi PPOB Mobile</h3>
+          <p class="file-role">Mobile Developer · Techdesk Indonesia</p>
+          <p class="file-desc">
+            Aplikasi pembayaran & pembelian pulsa/token (PPOB) berbasis React Native
+            dan Expo, dibangun dari nol termasuk konfigurasi build Android dan
+            notifikasi push lewat Firebase.
+          </p>
+          <div class="tags">
+            <span class="tag">React Native</span>
+            <span class="tag">Expo</span>
+            <span class="tag">Firebase</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="keahlian">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="doc-code">DAFTAR/ALAT</span>
+        <h2>Perangkat Kerja</h2>
+      </div>
+      <div class="stack-grid">
+        <div class="stack-group">
+          <h3>Web</h3>
+          <ul>
+            <li>React & Next.js</li>
+            <li>Laravel</li>
+            <li>Tailwind CSS</li>
+          </ul>
+        </div>
+        <div class="stack-group">
+          <h3>Mobile</h3>
+          <ul>
+            <li>React Native (Expo)</li>
+            <li>Firebase / FCM</li>
+          </ul>
+        </div>
+        <div class="stack-group">
+          <h3>Backend & Data</h3>
+          <ul>
+            <li>Flask / Python</li>
+            <li>MySQL</li>
+          </ul>
+        </div>
+        <div class="stack-group">
+          <h3>Infra & Tools</h3>
+          <ul>
+            <li>Cloudflare Tunnel</li>
+            <li>Git & GitHub</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak">
+    <div class="wrap">
+      <div class="contact-box">
+        <div>
+          <h2>Mari Berkolaborasi</h2>
+          <p>Terbuka untuk proyek freelance, kerja sama lewat Techdesk Indonesia,
+            atau sekadar ngobrol soal sistem yang lagi kamu bangun.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:nizam@techdesk.id"><span class="k">Email</span> nizam@techdesk.id</a>
+          <a href="https://github.com/Nizam0701" target="_blank" rel="noopener"><span class="k">GitHub</span> Nizam0701</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">© 2026 NIZAM — DIBUAT DI JAKARTA</div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  const files = document.querySelectorAll('[data-file]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  files.forEach(f => io.observe(f));
+</script>
+
+</body>
+</html>
